@@ -3,10 +3,12 @@ import { useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+import Themes from "./components/Themes"
 
 function App() {
 
 const [data, setData]= useState(null);
+
 
 
 useEffect(() => {
@@ -21,31 +23,21 @@ useEffect(() => {
  loadData();
 }, []);
 
+
+
 //phrase de chargement lors du loadData
  if(!data){
   return <h1>Chargement ...</h1>
  }
  console.log(data[0]);
 
-  return (
-    <>
-    {data.map((theme) => {
-          return (
-      <div key={theme.id}>
-        <h2>{theme.name}</h2>
-          <ul>
-          {theme.skills.map((skill) => (
-              <li key={skill.label}>
-               <p>{skill.label}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-    )})
-    }
-<button></button>
-    </>
-  )
+ return(
+  <>
+  <Themes themes={data}/>
+  </>
+  //je passe la variable data au composant Themes sous le nom themes.
+ )
+  
 }
 
 export default App
