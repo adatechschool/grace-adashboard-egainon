@@ -8,7 +8,7 @@ import Themes from "./components/Themes"
 function App() {
 
 const [data, setData]= useState(null);
-
+const [refresh, setRefresh] = useState(false);
 
 
 useEffect(() => {
@@ -23,9 +23,14 @@ useEffect(() => {
  loadData();
 }, []);
 
+// supprimer theme dans le state
+  const handleThemeDelete = (id) => {
+    setData((prevData) =>
+      prevData.filter((theme) => theme.id !== id)
+    );
+  };
 
-
-//phrase de chargement lors du loadData
+//phrase de chargement lors du loadData (utile pour voir si back connecté)
  if(!data){
   return <h1>Chargement ...</h1>
  }
@@ -33,9 +38,11 @@ useEffect(() => {
 
  return(
   <>
-  <Themes themes={data}/>
+   {/* je passe la variable data au composant Themes sous le nom themes. */}
+  <Themes themes={data}
+  onThemeDeleted={handleThemeDelete}/>
   </>
-  //je passe la variable data au composant Themes sous le nom themes.
+ 
  )
   
 }
