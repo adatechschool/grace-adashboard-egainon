@@ -5,7 +5,7 @@ function Skills({skills, themeId}) {
   const [skillsList, setSkillsList] = useState([]);
 
  useEffect(() => {
-    // À chaque fois que la prop skills change, ce useEffect met à jour le state local skillsList pour le synchroniser.
+    // À chaque fois que la prop skills change, MAJ du state local skillsList pour le synchroniser.
     setSkillsList(skills);
   }, [skills]);
 
