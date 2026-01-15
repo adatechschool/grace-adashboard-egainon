@@ -8,8 +8,6 @@ import Themes from "./components/Themes"
 function App() {
 
 const [data, setData]= useState(null);
-const [refresh, setRefresh] = useState(false);
-
 
 useEffect(() => {
     const loadData = async () => {
@@ -39,7 +37,8 @@ useEffect(() => {
  return(
   <>
    {/* je passe la variable data au composant Themes sous le nom themes. */}
-  <Themes themes={data}
+  <Themes 
+  themes={data}
   onThemeDeleted={handleThemeDelete}/>
   </>
  

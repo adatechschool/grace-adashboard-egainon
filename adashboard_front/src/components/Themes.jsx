@@ -3,9 +3,8 @@ import Skills from "./Skills"
 
 function Themes({themes, onThemeDeleted}) {
 
-//pour delete par id
 const [status, setStatus] = useState("");
-
+//pour delete par id
   const deleteTheme = async (id) => {
     try {
       await fetch(`http://localhost:3000/themes/${id}`, {
@@ -18,8 +17,6 @@ const [status, setStatus] = useState("");
       console.error(error);
     }
   };
-
-
   
   return (
     <>
@@ -28,8 +25,9 @@ const [status, setStatus] = useState("");
     
     {themes.map((theme) => (   //themes = {data}      
       <div key={theme.id}>
-
+      
       <h2>{theme.name}</h2>
+      
     
     <button
     onClick={() => deleteTheme(theme.id)}>
@@ -37,7 +35,10 @@ const [status, setStatus] = useState("");
     </button>
     
       {/* je passe la variable theme.skills au composant Skills sous le nom skills. */}
-      <Skills skills={theme.skills}/>
+      <Skills 
+      skills={theme.skills}
+      themeId={theme.id}/>
+
       
       </div>
       
