@@ -9,6 +9,7 @@ function Skills({skills, themeId}) {
     setSkillsList(skills);
   }, [skills]);
 
+  // PUT
    const updateStatus = async (skillIndex, newStatus) => {
    try {
     const formattedStatus = newStatus.toUpperCase();
@@ -40,7 +41,8 @@ function Skills({skills, themeId}) {
     <>
       <ul>
       {skillsList.map((skill, index) => ( //skills = {theme.skills} 
-        <li key={skill.label}>
+      //label et validation pour key
+        <li key={`${skill.label}-${skill.validation}`}> 
           <p>{skill.label}</p>
           <label>
           <select

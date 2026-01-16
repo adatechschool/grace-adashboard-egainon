@@ -5,7 +5,7 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
 
   const [status, setStatus] = useState("");
   const [value, setValue] = useState('');
-  const [skillsInput, setSkillsInput] = useState('');
+  const [skillsList, setSkillsList] = useState([]); // tableau de skills {label, validation}
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // DELETE
@@ -25,11 +25,12 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
   // POST
   const addTheme = async () => {
     if (!value.trim()) return;
-
-    const skillsArray = skillsInput //tableau propre de skills
-      .split(',')
-      .map(s => s.trim())
-      .filter(Boolean);
+    const skillsArray = skillsList
+      .filter(s => s.label.trim()) // garde seulement les skills non vides
+      .map(s => ({
+      label: s.label.trim(),
+      validation: s.validation
+    }));
 
     try {
       const response = await fetch("http://localhost:3000/themes", {
@@ -44,25 +45,29 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
         }),
       });
 
-      if (!response.ok) {
-        throw new Error("Erreur lors de l'ajout");
-      }
+    // Vérifie que la réponse contient du JSON
+    let newTheme = null;
+    const text = await response.text(); // récupère la réponse brute
+    if (text) {
+      newTheme = JSON.parse(text); // parse seulement si ce n'est pas vide
+      console.log("Thème ajouté :", newTheme);
+    } else {
+      console.log("Thème ajouté (backend ne renvoie rien)");
+    }
 
-      const newTheme = await response.json();
-
-      //reinitialisation du formulaire après ajout(vide champ value, champ skillsInput et fermeture du modal en mettant isModalOpen à false)
-      setValue('');
-      setSkillsInput('');
-      setIsModalOpen(false);
+    //reinitialisations du formulaire après ajout(vide champs et fermeture du modal en mettant isModalOpen à false) : reset
+    setValue("");
+    setSkillsList([]);
+    setIsModalOpen(false);
 
       if (onThemeAdded) {
         onThemeAdded(newTheme);
       }
-
     } catch (error) {
       console.error(error);
     }
   };
+
 
   return (
     <>
@@ -96,14 +101,53 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
             </div>
 
             <div>
-              <label>Skills (séparées par des virgules)</label>
-              <input
-                type="text"
-                value={skillsInput}
-                onChange={(e) => setSkillsInput(e.target.value)}
+            <label>Skills</label> 
+            {/* Liste des champs de skills */}
+            {skillsList.map((skill, index) => (
+              <div key={index}>
+                <input
+                  type="text"
+                  value={skill.label}
+                  onChange={(e) => {
+                  const newList = [...skillsList];
+                  newList[index].label = e.target.value;
+                  setSkillsList(newList);
+                }}
+                placeholder="Nom du skill"
               />
+              <select
+                  value={skill.validation}
+                  onChange={(e) => {
+                  const newList = [...skillsList];
+                  newList[index].validation = e.target.value;// modifie la propriété validation de l'élément à la position index avec la nouvelle valeur sélectionnée
+                  setSkillsList(newList);
+                  }}
+                >
+                <option value="KO">KO</option>
+                <option value="PROGRESS">PROGRESS</option>
+                <option value="OK">OK</option>
+              </select>
+              <button 
+                type="button" 
+                onClick={() => {
+                  setSkillsList(skillsList.filter((skill, i) => i !== index));//MAJ liste des skills en supprimant celui dont l’index correspond à index, en gardant tous les autres.
+                }}
+              >
+                ✕
+              </button>
             </div>
+            ))}
 
+        {/* Bouton pour ajouter un nouveau champ */}
+        <button 
+          type="button" 
+          onClick={() => {
+            setSkillsList([...skillsList, { label: '', validation: 'KO' }]);
+          }}
+        >
+          Ajouter un skill
+        </button>
+        </div>
             <button type="submit">Ajouter</button>
             <button type="button" onClick={() => setIsModalOpen(false)}>
               Annuler
@@ -131,4 +175,4 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
   );
 }
 
-export default Themes;
+export default Themes
