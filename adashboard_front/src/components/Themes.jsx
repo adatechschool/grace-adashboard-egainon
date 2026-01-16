@@ -75,7 +75,9 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
       {status && <p>{status}</p>}
 
       {/* bouton ouverture modale */}
-      <button onClick={() => setIsModalOpen(true)}>
+      <button 
+      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      onClick={() => setIsModalOpen(true)}>
         Ajouter un thème
       </button>
 
@@ -128,10 +130,12 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
                 <option value="OK">OK</option>
               </select>
               <button 
+                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                 type="button" 
                 onClick={() => {
                   setSkillsList(skillsList.filter((skill, i) => i !== index));//MAJ liste des skills en supprimant celui dont l’index correspond à index, en gardant tous les autres.
                 }}
+                
               >
                 ✕
               </button>
@@ -140,6 +144,7 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
 
         {/* Bouton pour ajouter un nouveau champ */}
         <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
           type="button" 
           onClick={() => {
             setSkillsList([...skillsList, { label: '', validation: 'KO' }]);
@@ -148,8 +153,10 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
           Ajouter un skill
         </button>
         </div>
-            <button type="submit">Ajouter</button>
-            <button type="button" onClick={() => setIsModalOpen(false)}>
+            <button 
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"type="submit">Ajouter</button>
+            <button 
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"type="button" onClick={() => setIsModalOpen(false)}>
               Annuler
             </button>
           </form>
@@ -161,7 +168,9 @@ function Themes({ themes, onThemeDeleted, onThemeAdded }) {
         <div key={theme.id}>
           <h2>{theme.name}</h2>
 
-          <button onClick={() => deleteTheme(theme.id)}>
+          <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          onClick={() => deleteTheme(theme.id)}>
             Supprimer
           </button>
 
